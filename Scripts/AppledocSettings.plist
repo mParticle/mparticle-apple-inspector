@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>--project-name</key>
+	<string>MPInspector</string>
+	<key>--logformat</key>
+	<string>1</string>
+	<key>--verbose</key>
+	<string>4</string>
+	<key>--input</key>
+	<array>
+		<string>../MPInspector/MPInspector.h</string>
+		<string>../MPInspector/InspectorViewController.swift</string>
+		<string>../MPInspector/InternalListener.swift</string>
+		<string>../MPInspector/TrackableObject.swift</string>
+	</array>
+	<key>--output</key>
+	<string>Docs</string>
+	<key>--no-create-docset</key>
+	<true/>
+	<key>--create-html</key>
+	<true/>
+	<key>--company-id</key>
+	<string>com.mparticle</string>
+	<key>--project-company</key>
+	<string>mParticle</string>
+</dict>
+</plist>
