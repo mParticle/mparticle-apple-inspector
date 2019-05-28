@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		9CD108AEB7C5A849C9285FCF /* Pods_InspectorExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4B00D6CBE53EF2D41EB9F3 /* Pods_InspectorExampleTests.framework */; };
 		AC4DB2FB8943430C7CB6DDEC /* Pods_InspectorExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D0864D33F077B735B2F86E /* Pods_InspectorExample.framework */; };
+		D39A7D4B229D7B24004F2966 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39A7D4A229D7B24004F2966 /* MainTableViewController.swift */; };
 		D3A74A322254F50400C8FD39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A74A312254F50400C8FD39 /* AppDelegate.swift */; };
-		D3A74A342254F50400C8FD39 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A74A332254F50400C8FD39 /* ViewController.swift */; };
 		D3A74A372254F50400C8FD39 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3A74A352254F50400C8FD39 /* Main.storyboard */; };
 		D3A74A392254F50700C8FD39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3A74A382254F50700C8FD39 /* Assets.xcassets */; };
 		D3A74A3C2254F50700C8FD39 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3A74A3A2254F50700C8FD39 /* LaunchScreen.storyboard */; };
@@ -33,9 +33,9 @@
 		4D757C9D45FDAE82F1A847C9 /* Pods-InspectorExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InspectorExampleTests.release.xcconfig"; path = "Target Support Files/Pods-InspectorExampleTests/Pods-InspectorExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		8B4B00D6CBE53EF2D41EB9F3 /* Pods_InspectorExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InspectorExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEBDBE68583658E036EA3BED /* Pods-InspectorExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InspectorExample.debug.xcconfig"; path = "Target Support Files/Pods-InspectorExample/Pods-InspectorExample.debug.xcconfig"; sourceTree = "<group>"; };
+		D39A7D4A229D7B24004F2966 /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		D3A74A2E2254F50400C8FD39 /* InspectorExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InspectorExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3A74A312254F50400C8FD39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D3A74A332254F50400C8FD39 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D3A74A362254F50400C8FD39 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D3A74A382254F50700C8FD39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D3A74A3B2254F50700C8FD39 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -99,7 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				D3A74A312254F50400C8FD39 /* AppDelegate.swift */,
-				D3A74A332254F50400C8FD39 /* ViewController.swift */,
+				D39A7D4A229D7B24004F2966 /* MainTableViewController.swift */,
 				D3A74A352254F50400C8FD39 /* Main.storyboard */,
 				D3A74A382254F50700C8FD39 /* Assets.xcassets */,
 				D3A74A3A2254F50700C8FD39 /* LaunchScreen.storyboard */,
@@ -329,7 +329,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3A74A342254F50400C8FD39 /* ViewController.swift in Sources */,
+				D39A7D4B229D7B24004F2966 /* MainTableViewController.swift in Sources */,
 				D3A74A322254F50400C8FD39 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
