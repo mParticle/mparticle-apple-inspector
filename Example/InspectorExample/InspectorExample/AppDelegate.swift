@@ -9,6 +9,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        
+        // Starts the mParticle SDK
+        let options = MParticleOptions(key: "REPLACE WITH APP KEY", secret: "REPLACE WITH APP SECRET")
+        MParticle.sharedInstance().start(with: options)
+        
+        MParticle.sharedInstance().logLevel = .debug
+        
         return true
     }
 

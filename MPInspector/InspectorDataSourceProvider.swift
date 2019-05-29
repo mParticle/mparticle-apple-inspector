@@ -36,7 +36,27 @@ class InspectorDataSourceProvider: NSObject, MPListenerProtocol {
      * @param message the database entry in JSON form
      */
     internal func onEntityStored(_ tableName: MPDatabaseTable, primaryKey: NSNumber, message: String) {
-        let newData = AllRowData(title: String(format: "_id: %@", arguments: [primaryKey]), body: message.description)
+        let tableType: String
+        switch tableName {
+        case MPDatabaseTable.attributes:
+            tableType = "Attributes"
+        case MPDatabaseTable.breadcrumbs:
+            tableType = "Breadcrumbs"
+        case MPDatabaseTable.messages:
+            tableType = "Messages"
+        case MPDatabaseTable.reporting:
+            tableType = "Reporting"
+        case MPDatabaseTable.sessions:
+            tableType = "Sessions"
+        case MPDatabaseTable.uploads:
+            tableType = "Uploads"
+        case MPDatabaseTable.unknown:
+            tableType = "Unknown"
+        default:
+            tableType = "Unknown"
+        }
+        
+        let newData = AllRowData(title: String(format: "_id: %@, %@ Table", arguments: [primaryKey, tableType]), body: message.description)
         
         self.databaseState.rows.append(newData)
         self.allData.rows.append(newData)
@@ -110,7 +130,7 @@ class InspectorDataSourceProvider: NSObject, MPListenerProtocol {
         if let recentRequest = self.networkUsage.rows.last, recentRequest.title == title, !recentRequest.networkRequestComplete {
             newData.previousData = self.networkUsage.rows.removeLast()
             self.networkUsage.rows.append(newData)
-            self.networkUsage.rows.removeLast()
+            self.allData.rows.removeLast()
             self.allData.rows.append(newData)
         }
     }

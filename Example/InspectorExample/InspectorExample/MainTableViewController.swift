@@ -13,12 +13,10 @@ class MainTableViewController: UITableViewController {
         super.viewDidLoad()
 
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "mParticleCell")
-        
-        // Starts the mParticle SDK
-        let options = MParticleOptions(key: "REPLACE WITH APP KEY", secret: "REPLACE WITH APP SECRET")
-        MParticle.sharedInstance().start(with: options)
-        
-        MParticle.sharedInstance().logLevel = .debug
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source

@@ -12,7 +12,7 @@ class FeedViewController: UITableViewController {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        feedData = AllSectionData(title: "Inccorect initialized", rows: []);
+        feedData = AllSectionData(title: "Incorrect initialized", rows: []);
         
         super.init(coder: aDecoder)
     }
@@ -21,6 +21,10 @@ class FeedViewController: UITableViewController {
         super.viewDidLoad()
         
         self.tableView.register(FeedTableViewCell.self, forCellReuseIdentifier: "cell")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tableView.reloadData()
     }
     
     // MARK: - Table view data source
