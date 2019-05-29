@@ -20,7 +20,12 @@ class InspectorDataSourceProvider: NSObject, MPListenerProtocol {
      * @param objects is the arguments sent to this api, such as the MPEvent in logEvent
      */
     internal func onAPICalled(_ apiName: String, stackTrace: [Any], isExternal: Bool, objects: [Any]?) {
-        let newData = AllRowData(title: apiName as String, body: stackTrace.description)
+        let stackTraceLine: String = (stackTrace[1] as! String)
+        let trimmedString = stackTraceLine.components(separatedBy: "[")[1].trimmingCharacters(in: .whitespacesAndNewlines)
+        let apiSubstring = trimmedString.components(separatedBy: apiName)[0]
+        let callingAPI = String(apiSubstring).trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        let newData = AllRowData(title: "\(callingAPI).\(apiName)", body: stackTrace.description)
         
         self.apiUsage.rows.append(newData)
         self.allData.rows.append(newData)
@@ -56,7 +61,7 @@ class InspectorDataSourceProvider: NSObject, MPListenerProtocol {
             tableType = "Unknown"
         }
         
-        let newData = AllRowData(title: String(format: "_id: %@, %@ Table", arguments: [primaryKey, tableType]), body: message.description)
+        let newData = AllRowData(title: "_id: \(primaryKey), \(tableType) Table", body: message.description)
         
         self.databaseState.rows.append(newData)
         self.allData.rows.append(newData)
@@ -87,7 +92,13 @@ class InspectorDataSourceProvider: NSObject, MPListenerProtocol {
         default:
             title = ""
         }
-        let newData = AllRowData(title: title, body: String(format: "url: %@ /n%@", arguments: [url, body.description]))
+        
+        var bodyDictionary = NSDictionary.init()
+        if ((body as? NSDictionary) != nil) {
+            bodyDictionary = body as! NSDictionary
+        }
+        
+        let newData = AllRowData(title: title, body: "URL: \(url) \nBody: \(bodyDictionary.description)")
         newData.isNetworkRequest = true
         newData.expandable = true
 
@@ -121,7 +132,13 @@ class InspectorDataSourceProvider: NSObject, MPListenerProtocol {
         default:
             title = ""
         }
-        let newData = AllRowData(title: title, body: String(format: "url: %@ /n%@", arguments: [url, body.description]))
+        
+        var bodyDictionary = NSDictionary.init()
+        if ((body as? NSDictionary) != nil) {
+            bodyDictionary = body as! NSDictionary
+        }
+        
+        let newData = AllRowData(title: title, body: "URL: \(url) \nBody: \(bodyDictionary.description) \nResponse Code: \(responseCode.description)")
         newData.isNetworkRequest = true
         newData.networkRequestComplete = true
         let success = responseCode == 200 || responseCode == 202
