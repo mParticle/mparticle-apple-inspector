@@ -20,12 +20,14 @@ class AllEventsViewController: UITableViewController {
         
         self.tableView.register(AllRowTableViewCell.self, forCellReuseIdentifier: "row")
         self.tableView.register(AllHeaderTableViewCell.self, forCellReuseIdentifier: "header")
-        
-        self.tableView.rowHeight = UITableView.automaticDimension
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.tableView.reloadData()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        self.tableView.separatorStyle = .none
     }
     
     // MARK: - Table view data source
@@ -65,7 +67,7 @@ class AllEventsViewController: UITableViewController {
             cell.detailView.text = sections[indexPath.section].rows[indexPath.row - 1].body
             cell.expandCell(expand: sections[indexPath.section].rows[indexPath.row - 1].expanded)
             cell.statusImg.isHidden = !sections[indexPath.section].rows[indexPath.row - 1].isNetworkRequest
-            cell.statusImg.backgroundColor = sections[indexPath.section].rows[indexPath.row - 1].networkRequestComplete ? UIColor.gray : UIColor.green
+            cell.statusImg.backgroundColor = sections[indexPath.section].rows[indexPath.row - 1].networkRequestComplete ? UIColor.green : UIColor.gray
             if sections[indexPath.section].rows[indexPath.row - 1].networkRequestFailed {
                 cell.statusImg.backgroundColor = UIColor.red
             }
@@ -75,27 +77,29 @@ class AllEventsViewController: UITableViewController {
         
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath.row == 0) {
+            return 22
+        } else {
+            if (sections[indexPath.section].rows[indexPath.row - 1].expanded) {
+                return 104
+            } else {
+                return 22
+            }
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.row == 0) {
             sections[indexPath.section].expanded = !sections[indexPath.section].expanded;
             
-            self.tableView.reloadSections(IndexSet.init(integer: indexPath.section), with: .fade)
+            self.tableView.reloadData()
         } else if (sections[indexPath.section].rows[indexPath.row - 1].expandable) {
+            self.tableView.reloadData()
+
             sections[indexPath.section].rows[indexPath.row - 1].expanded = !sections[indexPath.section].rows[indexPath.row - 1].expanded;
             
-            self.tableView.reloadSections(IndexSet.init(integer: indexPath.section), with: .fade)
-        } else {
-            let error = NSError.init()
-            let pathfinderVC = PathfinderViewController(error: error)
-            self.navigationController?.pushViewController(pathfinderVC, animated: true)
+            self.tableView.reloadData()
         }
-    }
-    
-    enum Section: NSInteger {
-        case sdkState = 0
-        case apiUsage = 1
-        case kitState = 2
-        case networkUsage = 3
-        case databaseState = 4
     }
 }

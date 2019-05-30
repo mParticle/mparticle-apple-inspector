@@ -25,7 +25,14 @@ class InspectorDataSourceProvider: NSObject, MPListenerProtocol {
         let apiSubstring = trimmedString.components(separatedBy: apiName)[0]
         let callingAPI = String(apiSubstring).trimmingCharacters(in: .whitespacesAndNewlines)
         
-        let newData = AllRowData(title: "\(callingAPI).\(apiName)", body: stackTrace.description)
+        var bodyString = ""
+        for line in stackTrace {
+            if ((line as? String) != nil) {
+                bodyString.append("\((line as! String).replacingOccurrences(of: "   ", with: " "))\n\n")
+            }
+        }
+        
+        let newData = AllRowData(title: "\(callingAPI).\(apiName)", body: bodyString, source: "API Usage")
         
         self.apiUsage.rows.append(newData)
         self.allData.rows.append(newData)
@@ -61,7 +68,7 @@ class InspectorDataSourceProvider: NSObject, MPListenerProtocol {
             tableType = "Unknown"
         }
         
-        let newData = AllRowData(title: "_id: \(primaryKey), \(tableType) Table", body: message.description)
+        let newData = AllRowData(title: "_id: \(primaryKey), \(tableType) Table", body: message.description, source: "Database State")
         
         self.databaseState.rows.append(newData)
         self.allData.rows.append(newData)
@@ -96,9 +103,18 @@ class InspectorDataSourceProvider: NSObject, MPListenerProtocol {
         var bodyDictionary = NSDictionary.init()
         if ((body as? NSDictionary) != nil) {
             bodyDictionary = body as! NSDictionary
+        } else if ((body as? Data) != nil) {
+            do {
+                // make sure this JSON is in the format we expect
+                if let result = try JSONSerialization.jsonObject(with: (body as! Data), options: []) as? NSDictionary {
+                    bodyDictionary = result
+                }
+            } catch let error as NSError {
+                print("Failed to load: \(error.localizedDescription)")
+            }
         }
         
-        let newData = AllRowData(title: title, body: "URL: \(url) \nBody: \(bodyDictionary.description)")
+        let newData = AllRowData(title: title, body: "URL: \(url) \nBody: \(bodyDictionary.description)", source: "Network Usage")
         newData.isNetworkRequest = true
         newData.expandable = true
 
@@ -136,9 +152,18 @@ class InspectorDataSourceProvider: NSObject, MPListenerProtocol {
         var bodyDictionary = NSDictionary.init()
         if ((body as? NSDictionary) != nil) {
             bodyDictionary = body as! NSDictionary
+        } else if ((body as? Data) != nil) {
+            do {
+                // make sure this JSON is in the format we expect
+                if let result = try JSONSerialization.jsonObject(with: (body as! Data), options: []) as? NSDictionary {
+                    bodyDictionary = result
+                }
+            } catch let error as NSError {
+                print("Failed to load: \(error.localizedDescription)")
+            }
         }
         
-        let newData = AllRowData(title: title, body: "URL: \(url) \nBody: \(bodyDictionary.description) \nResponse Code: \(responseCode.description)")
+        let newData = AllRowData(title: title, body: "URL: \(url) \nBody: \(bodyDictionary.description)Response Code: \(responseCode.description)", source: "Network Usage")
         newData.isNetworkRequest = true
         newData.networkRequestComplete = true
         let success = responseCode == 200 || responseCode == 202

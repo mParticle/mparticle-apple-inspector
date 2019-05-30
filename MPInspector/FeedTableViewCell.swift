@@ -8,8 +8,8 @@ class FeedTableViewCell: UITableViewCell {
     let statusImageView = UIImageView()
     let detailView = UITextView()
 
-    private var detailCollapsed: [NSLayoutConstraint] = []
-    private var detailExpanded: [NSLayoutConstraint] = []
+    private var collapsedConstraints: [NSLayoutConstraint] = []
+    private var expandededConstraints: [NSLayoutConstraint] = []
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,7 +24,10 @@ class FeedTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
         
-        typeLabel.setSizeFont(sizeFont: 10)
+        subView.backgroundColor = UIColor.backgroundGrey
+        subView.layer.cornerRadius = 4
+        
+        typeLabel.setSizeFont(sizeFont: 6)
         typeLabel.textAlignment = .left
         
         titleLabel.font = UIFont.boldSystemFont(ofSize: 10)
@@ -34,58 +37,86 @@ class FeedTableViewCell: UITableViewCell {
         detailLabel.textAlignment = .right
         
         statusImageView.backgroundColor = UIColor.green
-        statusImageView.layer.cornerRadius = 5
+        statusImageView.layer.cornerRadius = 6
         statusImageView.clipsToBounds = true
         statusImageView.isHidden = true
         
         detailView.backgroundColor = UIColor.detailGrey
         detailView.font = UIFont(name: titleLabel.font.fontName, size: CGFloat(8.0))!
         detailView.isEditable = false
+        detailView.layer.cornerRadius = 4
         
+        subView.translatesAutoresizingMaskIntoConstraints = false
         typeLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         detailLabel.translatesAutoresizingMaskIntoConstraints = false
         statusImageView.translatesAutoresizingMaskIntoConstraints = false
         detailView.translatesAutoresizingMaskIntoConstraints = false
         
-        subView.addSubview(typeLabel)
-        subView.addSubview(titleLabel)
-        subView.addSubview(detailLabel)
-        subView.addSubview(statusImageView)
-        subView.addSubview(detailView)
-        
-        let subviewDict = [
-            "typeLabel" : typeLabel,
-            "titleLabel" : titleLabel,
-            "detailLabel" : detailLabel,
-            "statusImageView" : statusImageView,
-            "detailView" : detailView,
-            ] as [String : Any]
-        
-        detailCollapsed = NSLayoutConstraint.constraints(withVisualFormat: "V:|-4-[statusImageView(12)]-4-[detailView(0)]|", options: [], metrics: nil, views: subviewDict)
-        detailExpanded = NSLayoutConstraint.constraints(withVisualFormat: "V:|-4-[statusImageView(12)]-4-[detailView(40)]-4-|", options: [], metrics: nil, views: subviewDict)
-        
-        subView.addConstraints(detailCollapsed)
-        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(4)-[typeLabel]", options: [], metrics: nil, views: subviewDict))
-        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(4)-[titleLabel]", options: [], metrics: nil, views: subviewDict))
-        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(4)-[detailLabel]", options: [], metrics: nil, views: subviewDict))
-        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[typeLabel(40)]-[titleLabel]-[detailLabel(20)]-|", options: [], metrics: nil, views: subviewDict))
-        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[typeLabel(40)]-[detailView]-2-|", options: [], metrics: nil, views: subviewDict))
-        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[statusImageView(12)]-4-|", options: [], metrics: nil, views: subviewDict))
-        
-        subView.backgroundColor = UIColor.backgroundGrey
-        subView.layer.cornerRadius = 8
-        
-        subView.translatesAutoresizingMaskIntoConstraints = false
-        
         contentView.addSubview(subView)
+        contentView.addSubview(typeLabel)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(detailLabel)
+        contentView.addSubview(statusImageView)
+        contentView.addSubview(detailView)
         
-        let viewDict = [
-            "subView" : subView,
-            ] as [String : Any]
+        collapsedConstraints = [
+            subView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12.0),
+            subView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10.0),
+            subView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 1.0),
+            subView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -1.0),
+            
+            statusImageView.topAnchor.constraint(equalTo: subView.topAnchor, constant: 4.0),
+            statusImageView.rightAnchor.constraint(equalTo: subView.rightAnchor, constant: -5.0),
+            statusImageView.widthAnchor.constraint(equalToConstant: 12),
+            statusImageView.heightAnchor.constraint(equalToConstant: 12),
+            
+            typeLabel.leftAnchor.constraint(equalTo: subView.leftAnchor, constant: 4.0),
+            typeLabel.topAnchor.constraint(equalTo: subView.topAnchor, constant: 6.0),
+            typeLabel.widthAnchor.constraint(equalToConstant: 54),
+            
+            titleLabel.leftAnchor.constraint(equalTo: typeLabel.rightAnchor, constant: 8.0),
+            titleLabel.rightAnchor.constraint(equalTo: subView.rightAnchor, constant: -4.0),
+            titleLabel.topAnchor.constraint(equalTo: subView.topAnchor, constant: 4.0),
+            
+            detailLabel.rightAnchor.constraint(equalTo: subView.rightAnchor, constant: -8.0),
+            detailLabel.topAnchor.constraint(equalTo: subView.topAnchor, constant: 4.0),
+            detailLabel.widthAnchor.constraint(equalToConstant: 20),
+            
+            detailView.leftAnchor.constraint(equalTo: subView.leftAnchor, constant: 4.0),
+            detailView.rightAnchor.constraint(equalTo: subView.rightAnchor, constant: -4.0),
+            detailView.bottomAnchor.constraint(equalTo: subView.bottomAnchor, constant: -4.0),
+            detailView.heightAnchor.constraint(equalToConstant: 0),
+        ]
         
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-1-[subView]-1-|", options: [], metrics: nil, views: viewDict))
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-12-[subView]-10-|", options: [], metrics: nil, views: viewDict))
+        expandededConstraints = [
+            subView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12.0),
+            subView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10.0),
+            subView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 1.0),
+            subView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -1.0),
+            
+            statusImageView.topAnchor.constraint(equalTo: subView.topAnchor, constant: 4.0),
+            statusImageView.rightAnchor.constraint(equalTo: subView.rightAnchor, constant: -5.0),
+            statusImageView.widthAnchor.constraint(equalToConstant: 12),
+            statusImageView.heightAnchor.constraint(equalToConstant: 12),
+            
+            typeLabel.leftAnchor.constraint(equalTo: subView.leftAnchor, constant: 4.0),
+            typeLabel.topAnchor.constraint(equalTo: subView.topAnchor, constant: 6.0),
+            typeLabel.widthAnchor.constraint(equalToConstant: 54),
+            
+            titleLabel.leftAnchor.constraint(equalTo: typeLabel.rightAnchor, constant: 8.0),
+            titleLabel.rightAnchor.constraint(equalTo: subView.rightAnchor, constant: -4.0),
+            titleLabel.topAnchor.constraint(equalTo: subView.topAnchor, constant: 4.0),
+            
+            detailLabel.rightAnchor.constraint(equalTo: subView.rightAnchor, constant: -8.0),
+            detailLabel.topAnchor.constraint(equalTo: subView.topAnchor, constant: 4.0),
+            detailLabel.widthAnchor.constraint(equalToConstant: 20),
+            
+            detailView.leftAnchor.constraint(equalTo: subView.leftAnchor, constant: 4.0),
+            detailView.rightAnchor.constraint(equalTo: subView.rightAnchor, constant: -4.0),
+            detailView.bottomAnchor.constraint(equalTo: subView.bottomAnchor, constant: -4.0),
+            detailView.heightAnchor.constraint(equalToConstant: 80),
+        ]
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -104,14 +135,12 @@ class FeedTableViewCell: UITableViewCell {
     }
     
     func expandCell(expand: Bool) {
+        NSLayoutConstraint.deactivate(self.collapsedConstraints + self.expandededConstraints)
+        
         if expand {
-            subView.removeConstraints(detailCollapsed)
-            
-            subView.addConstraints(detailExpanded)
+            NSLayoutConstraint.activate(self.expandededConstraints)
         } else {
-            subView.removeConstraints(detailExpanded)
-            
-            subView.addConstraints(detailCollapsed)
+            NSLayoutConstraint.activate(self.collapsedConstraints)
         }
     }
 }

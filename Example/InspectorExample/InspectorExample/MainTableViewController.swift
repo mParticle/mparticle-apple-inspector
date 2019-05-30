@@ -7,7 +7,7 @@ class MainTableViewController: UITableViewController {
 
     var cellTitles = ["Log Simple Event", "Log Event", "Log Screen", "Log Commerce Event", "Log Timed Event",
     "Log Error", "Set User Attribute", "Increment User Attribute",
-    "Set Session Attribute", "Increment Session Attribute"]
+    "Set Session Attribute", "Increment Session Attribute", "Login User 1", "Login User 2", "Logout"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,6 +61,12 @@ class MainTableViewController: UITableViewController {
             self.setSessionAttribute()
         case 9:
             self.incrementSessionAttribute()
+        case 10:
+            self.loginUser1()
+        case 11:
+            self.loginUser2()
+        case 12:
+            self.logout()
         default:
             NSLog("Invalid row selected: %@", indexPath.row)
         }
@@ -178,5 +184,32 @@ class MainTableViewController: UITableViewController {
         NSLog("Performing Increment Session Attribute")
 
         MParticle.sharedInstance().incrementSessionAttribute("Song Count", byValue: 1)
+    }
+    
+    func loginUser1() {
+        NSLog("Login User 1")
+
+        let identityRequest = MPIdentityApiRequest.withEmptyUser()
+        identityRequest.email = "foo@example.com"
+        identityRequest.customerId = "123456"
+        
+        MParticle.sharedInstance().identity.login(identityRequest, completion: nil)
+    }
+    
+    func loginUser2() {
+        NSLog("Login User 2")
+
+        let identityRequest = MPIdentityApiRequest.withEmptyUser()
+        identityRequest.email = "boo@example.com"
+        identityRequest.customerId = "789"
+        
+        MParticle.sharedInstance().identity.login(identityRequest, completion: nil)
+    }
+    
+    func logout() {
+        NSLog("Logout")
+
+        MParticle.sharedInstance().identity.logout(MPIdentityApiRequest.withEmptyUser(),
+                                                   completion: nil)
     }
 }
