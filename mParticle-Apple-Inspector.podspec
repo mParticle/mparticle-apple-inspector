@@ -9,7 +9,6 @@ Pod::Spec.new do |spec|
   DESC
 
   spec.homepage     = "https://www.mparticle.com"
-  # spec.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
   spec.license      = { :type => 'Apache 2.0', :file => 'LICENSE'}
   spec.author       = { "mParticle" => "support@mparticle.com" }

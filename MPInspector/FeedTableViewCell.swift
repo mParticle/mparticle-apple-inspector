@@ -13,7 +13,7 @@ class FeedTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        // Initialization code 2
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -23,6 +23,7 @@ class FeedTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
+        // Test Change
         
         subView.backgroundColor = UIColor.backgroundGrey
         subView.layer.cornerRadius = 4
