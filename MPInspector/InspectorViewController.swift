@@ -12,9 +12,6 @@ public class InspectorViewController: UITabBarController, UIPopoverControllerDel
         
         MPListenerController.sharedInstance().addSdkListener(self.dataSourceProvider)
         
-        let theme = ThemeManager.currentTheme()
-        ThemeManager.applyTheme(theme: theme)
-        
         self.viewControllers = [AllEventsViewController(style: .plain, sections: [dataSourceProvider.apiUsage, dataSourceProvider.databaseState, dataSourceProvider.networkUsage]), FeedViewController(style: .plain, feedData: dataSourceProvider.allData)]
     }
     
@@ -29,6 +26,11 @@ public class InspectorViewController: UITabBarController, UIPopoverControllerDel
     override public func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
+        
+        let theme = ThemeManager.currentTheme()
+        
+        self.tabBarController?.tabBar.tintColor = theme.mainColor
+        self.tabBarController?.tabBar.barTintColor = theme.secondaryColor
     }
     
     @objc func settings() {

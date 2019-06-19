@@ -30,14 +30,14 @@ class AllHeaderTableViewCell: UITableViewCell {
         contentView.addSubview(chevronImg)
         contentView.addSubview(title)
         
-        let viewsDict = [
-            "image" : chevronImg,
-            "username" : title,
-            ] as [String : Any]
-        
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[image(12)]-|", options: [], metrics: nil, views: viewsDict))
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[username]", options: [], metrics: nil, views: viewsDict))
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[username]-[image(12)]-16-|", options: [], metrics: nil, views: viewsDict))
+        NSLayoutConstraint.activate([
+            title.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            title.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 8.0),
+            chevronImg.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            chevronImg.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16.0),
+            chevronImg.widthAnchor.constraint(equalToConstant: 12),
+            chevronImg.heightAnchor.constraint(equalToConstant: 12),
+            ])
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

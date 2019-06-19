@@ -6,8 +6,8 @@ class AllRowTableViewCell: UITableViewCell {
     let title = UILabel()
     let detailView = UITextView()
     
-    private var detailCollapsed: [NSLayoutConstraint] = []
-    private var detailExpanded: [NSLayoutConstraint] = []
+    private var collapsedConstraints: [NSLayoutConstraint] = []
+    private var expandededConstraints: [NSLayoutConstraint] = []
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,51 +22,71 @@ class AllRowTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
 
+        subView.backgroundColor = UIColor.backgroundGrey
+        subView.layer.cornerRadius = 4
+        
         title.setSizeFont(sizeFont: 10.0)
 
         statusImg.layer.cornerRadius = 6
         statusImg.clipsToBounds = true
         statusImg.isHidden = true
         
-        detailView.backgroundColor = UIColor.orange.withAlphaComponent(0.0)
+        detailView.backgroundColor = UIColor.detailGrey
         detailView.font = UIFont(name: title.font.fontName, size: CGFloat(8.0))!
         detailView.isEditable = false
-        
+        detailView.layer.cornerRadius = 4
+
+        subView.translatesAutoresizingMaskIntoConstraints = false
         statusImg.translatesAutoresizingMaskIntoConstraints = false
         title.translatesAutoresizingMaskIntoConstraints = false
         detailView.translatesAutoresizingMaskIntoConstraints = false
         
-        subView.addSubview(statusImg)
-        subView.addSubview(title)
-        subView.addSubview(detailView)
-        
-        let viewsDict = [
-            "image" : statusImg,
-            "title" : title,
-            "detailView" : detailView
-            ] as [String : Any]
-        
-        detailCollapsed = NSLayoutConstraint.constraints(withVisualFormat: "V:|-4-[image(12)]-4-[detailView(0)]|", options: [], metrics: nil, views: viewsDict)
-        detailExpanded = NSLayoutConstraint.constraints(withVisualFormat: "V:|-4-[image(12)]-4-[detailView(80)]-4-|", options: [], metrics: nil, views: viewsDict)
-        
-        subView.addConstraints(detailCollapsed)
-        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-4-[title]", options: [], metrics: nil, views: viewsDict))
-        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-4-[title]-[image(12)]-5.5-|", options: [], metrics: nil, views: viewsDict))
-        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-4-[detailView]|", options: [], metrics: nil, views: viewsDict))
-        
-        subView.backgroundColor = UIColor.backgroundGrey
-        subView.layer.cornerRadius = 4
-        
-        subView.translatesAutoresizingMaskIntoConstraints = false
-        
         contentView.addSubview(subView)
+        contentView.addSubview(statusImg)
+        contentView.addSubview(title)
+        contentView.addSubview(detailView)
+
+        collapsedConstraints = [
+            subView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12.0),
+            subView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10.0),
+            subView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 1.0),
+            subView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -1.0),
+            
+            statusImg.topAnchor.constraint(equalTo: subView.topAnchor, constant: 4.0),
+            statusImg.rightAnchor.constraint(equalTo: subView.rightAnchor, constant: -5.5),
+            statusImg.widthAnchor.constraint(equalToConstant: 12),
+            statusImg.heightAnchor.constraint(equalToConstant: 12),
+            
+            title.leftAnchor.constraint(equalTo: subView.leftAnchor, constant: 4.0),
+            title.rightAnchor.constraint(equalTo: statusImg.leftAnchor, constant: -8.0),
+            title.topAnchor.constraint(equalTo: subView.topAnchor, constant: 4.0),
+            
+            detailView.leftAnchor.constraint(equalTo: subView.leftAnchor, constant: 4.0),
+            detailView.rightAnchor.constraint(equalTo: subView.rightAnchor, constant: -4.0),
+            detailView.bottomAnchor.constraint(equalTo: subView.bottomAnchor, constant: -4.0),
+            detailView.heightAnchor.constraint(equalToConstant: 0),
+        ]
         
-        let viewDict = [
-            "subView" : subView,
-            ] as [String : Any]
-        
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-1-[subView]-1-|", options: [], metrics: nil, views: viewDict))
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-12-[subView]-10-|", options: [], metrics: nil, views: viewDict))
+        expandededConstraints = [
+            subView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12.0),
+            subView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10.0),
+            subView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 1.0),
+            subView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -1.0),
+            
+            statusImg.topAnchor.constraint(equalTo: subView.topAnchor, constant: 1.0),
+            statusImg.rightAnchor.constraint(equalTo: subView.rightAnchor, constant: -5.5),
+            statusImg.widthAnchor.constraint(equalToConstant: 12),
+            statusImg.heightAnchor.constraint(equalToConstant: 12),
+            
+            title.leftAnchor.constraint(equalTo: subView.leftAnchor, constant: 4.0),
+            title.rightAnchor.constraint(equalTo: statusImg.leftAnchor, constant: -8.0),
+            title.topAnchor.constraint(equalTo: subView.topAnchor, constant: 4.0),
+            
+            detailView.leftAnchor.constraint(equalTo: subView.leftAnchor, constant: 4.0),
+            detailView.rightAnchor.constraint(equalTo: subView.rightAnchor, constant: -4.0),
+            detailView.bottomAnchor.constraint(equalTo: subView.bottomAnchor, constant: -4.0),
+            detailView.heightAnchor.constraint(equalToConstant: 76),
+        ]
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -82,14 +102,12 @@ class AllRowTableViewCell: UITableViewCell {
     }
     
     func expandCell(expand: Bool) {
+        NSLayoutConstraint.deactivate(self.collapsedConstraints + self.expandededConstraints)
+        
         if expand {
-            subView.removeConstraints(detailCollapsed)
-            
-            subView.addConstraints(detailExpanded)
+            NSLayoutConstraint.activate(self.expandededConstraints)
         } else {
-            subView.removeConstraints(detailExpanded)
-            
-            subView.addConstraints(detailCollapsed)
+            NSLayoutConstraint.activate(self.collapsedConstraints)
         }
     }
 }

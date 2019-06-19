@@ -12,7 +12,7 @@ class FeedViewController: UITableViewController {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        feedData = AllSectionData(title: "Inccorect initialized", rows: []);
+        feedData = AllSectionData(title: "Incorrect initialized", rows: []);
         
         super.init(coder: aDecoder)
     }
@@ -21,6 +21,14 @@ class FeedViewController: UITableViewController {
         super.viewDidLoad()
         
         self.tableView.register(FeedTableViewCell.self, forCellReuseIdentifier: "cell")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tableView.reloadData()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        self.tableView.separatorStyle = .none
     }
     
     // MARK: - Table view data source
@@ -38,10 +46,11 @@ class FeedViewController: UITableViewController {
         
         cell.titleLabel.text = feedData.rows[indexPath.row].title
         cell.detailView.text = feedData.rows[indexPath.row].body
+        cell.typeLabel.text = feedData.rows[indexPath.row].source
 
         cell.expandCell(expand: feedData.rows[indexPath.row].expanded)
         cell.statusImageView.isHidden = !feedData.rows[indexPath.row].isNetworkRequest
-        cell.statusImageView.backgroundColor = feedData.rows[indexPath.row].networkRequestComplete ? UIColor.gray : UIColor.green
+        cell.statusImageView.backgroundColor = feedData.rows[indexPath.row].networkRequestComplete ? UIColor.green : UIColor.gray
         if feedData.rows[indexPath.row].networkRequestFailed {
             cell.statusImageView.backgroundColor = UIColor.red
         }
@@ -49,44 +58,19 @@ class FeedViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        feedData.rows[indexPath.row].expanded = !feedData.rows[indexPath.row].expanded;
-        
-        self.tableView.reloadSections(IndexSet.init(integer: indexPath.section), with: .fade)
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (feedData.rows[indexPath.row].expanded) {
+            return 104
+        } else {
+            return 22
+        }
     }
     
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.tableView.reloadData()
+
+        feedData.rows[indexPath.row].expanded = !feedData.rows[indexPath.row].expanded;
+        
+        self.tableView.reloadData()
+    }
 }

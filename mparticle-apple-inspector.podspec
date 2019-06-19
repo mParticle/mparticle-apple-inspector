@@ -19,14 +19,12 @@ Pod::Spec.new do |spec|
   spec.social_media_url  = "https://twitter.com/mparticle"
   spec.requires_arc      = true
   spec.module_name       = "mParticle_Apple_Inspector"
-  spec.ios.deployment_target  = "8.0"
-  spec.tvos.deployment_target = "9.0"
+  spec.ios.deployment_target  = "10.0"
   spec.swift_version     = '5.0'
   spec.preserve_paths    = 'MPInspector', 'MPInspector/**', 'MPInspector/**/*'
 
   spec.dependency 'mParticle-Apple-SDK/mParticle'
   spec.source_files      = 'MPInspector/**/*.{swift,xcassets}'
   spec.resources         = 'MPInspector/*.xcassets'
-  spec.exclude_files     = 'Example'
 
 end
